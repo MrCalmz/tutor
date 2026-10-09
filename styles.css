@@ -201,3 +201,105 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   html { scroll-behavior: auto !important; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+/* Final overflow guard: decorative artwork must never widen the viewport. */
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  position: relative;
+}
+body, main, header, footer, section, .section-wrap,
+.hero, .intro-grid, .learning-heading, .programme-grid,
+.programme-card, .school-life, .life-gallery,
+.admissions-wrap, .contact-section, .contact-form {
+  min-width: 0;
+}
+img, svg, video, canvas, iframe {
+  max-width: 100%;
+}
+.hero-visual, .life-gallery {
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  .hero-visual { width: calc(100% - 8px); }
+  .hero-visual::before { inset: 0 0 12px 12px; }
+  .hero-visual .floating-note { right: 4px; }
+  .hero-visual .orbit-one { right: 2px; }
+  .hero-visual .orbit-two { right: 28px; }
+  .hero-visual .image-tag { left: 4px; max-width: calc(100% - 8px); }
+  .hero-bottom { max-width: 100%; }
+  .hero-bottom > span { min-width: 0; }
+  .admissions-decoration { right: 0; pointer-events: none; }
+}
+
+/* Keep the WhatsApp shortcut visibly available at every scroll position. */
+#whatsapp-float.whatsapp-float {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  z-index: 99999 !important;
+  right: max(16px, env(safe-area-inset-right)) !important;
+  left: auto !important;
+  bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  width: auto;
+  max-width: calc(100% - 32px);
+  min-width: 154px;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 999px;
+  overflow: visible;
+}
+#whatsapp-float.whatsapp-float .whatsapp-float-label {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+  border: 0;
+  color: #fff;
+}
+#whatsapp-float.whatsapp-float .whatsapp-float-icon {
+  display: grid;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
+}
+#whatsapp-float.whatsapp-float.is-hidden {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+@media (max-width: 420px) {
+  #whatsapp-float.whatsapp-float {
+    min-width: 150px;
+    width: auto;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 15px;
+  }
+  #whatsapp-float.whatsapp-float .whatsapp-float-label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: nowrap;
+  }
+}
