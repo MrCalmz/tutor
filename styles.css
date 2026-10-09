@@ -303,3 +303,18 @@ img, svg, video, canvas, iframe {
     white-space: nowrap;
   }
 }
+
+
+/* Correct the mobile hero's width-plus-margin calculation and clip art locally. */
+@media (max-width: 700px) {
+  .hero-visual {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 15px !important;
+  }
+}
+#main-content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
