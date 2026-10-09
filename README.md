@@ -6,7 +6,7 @@ A responsive, static website template for pitching website services to private s
 
 - `index.html` — page content, sections, form and metadata
 - `styles.css` — responsive layout and styling
-- `script.js` — school configuration, mobile navigation and WhatsApp enquiry flow
+- `script.js` — school configuration, responsive navigation, fixed WhatsApp contact button and WhatsApp enquiry flow
 
 ## Run locally
 
@@ -22,10 +22,14 @@ Open `index.html` in a browser, or serve the folder with any static web server. 
 6. Add a favicon/logo if supplied by the school and update social sharing metadata.
 7. Test the mobile menu, form validation, WhatsApp link, image loading and all navigation links on phone and desktop.
 
-## Form behaviour
+## Responsive behaviour
 
-The admissions form validates required fields and prepares a WhatsApp message. It does **not** store or email enquiries. Replace it with the school's preferred form/email/CRM integration if required. The WhatsApp action opens only after the visitor submits the form.
+The layout is adapted for desktop, tablet, mobile phones, narrow phones and landscape mobile screens. The navigation collapses on smaller tablet and phone sizes. A floating WhatsApp admissions shortcut appears at the lower-right corner and automatically hides while the admissions contact section is in view, so it does not cover the form.
+
+## Form and WhatsApp behaviour
+
+The admissions form validates required fields and prepares a WhatsApp message. It does **not** store or email enquiries. The WhatsApp number is intentionally blank in the demo configuration so visitors are not sent to a fake number. Add the school's real number before presenting a rebranded copy. The floating button and enquiry form both use that setting. Replace the form with the school's preferred email/CRM integration if required.
 
 ## Images
 
-Photos load from Unsplash image URLs and therefore require an internet connection. For production, consider downloading selected images and storing optimised local copies in the repository, after confirming the applicable license and any model/brand permissions.
+Photos load from Unsplash image URLs and therefore require an internet connection. Unsplash allows broad commercial use under its license, but rights relating to recognisable people, brands and property may still apply. For a real school launch, use school-approved photos where possible (especially for children), and confirm the necessary parent/guardian permissions. Consider storing optimised local copies after confirming the applicable rights.
