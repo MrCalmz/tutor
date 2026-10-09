@@ -3,31 +3,77 @@ const SCHOOL_CONFIG = {
   name: "BrightPath",
   address: "School address, City, Nigeria",
   email: "admissions@example.com",
-  whatsapp: "2348000000000" // Replace with the school's WhatsApp number, country code first, digits only.
+  whatsapp: "" // Replace with the real WhatsApp number: country code first, digits only, e.g. 2348012345678.
 };
 
 document.querySelectorAll("[data-school-name]").forEach((node) => { node.textContent = SCHOOL_CONFIG.name; });
 document.querySelectorAll("[data-school-address]").forEach((node) => { node.textContent = SCHOOL_CONFIG.address; });
 document.querySelectorAll("[data-school-email]").forEach((node) => { node.textContent = SCHOOL_CONFIG.email; });
 document.title = `${SCHOOL_CONFIG.name} Academy | Growing Bright Futures`;
+const descriptionMeta = document.querySelector('meta[name="description"]');
+if (descriptionMeta) {
+  descriptionMeta.content = `Discover ${SCHOOL_CONFIG.name} Academy. Explore learning programmes, school life and admissions enquiries.`;
+}
 document.getElementById("year").textContent = new Date().getFullYear();
 
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".primary-nav");
+const closeMenu = () => {
+  nav.classList.remove("is-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Open navigation");
+};
 menuToggle.addEventListener("click", () => {
   const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
   menuToggle.setAttribute("aria-expanded", String(!isOpen));
   menuToggle.setAttribute("aria-label", isOpen ? "Open navigation" : "Close navigation");
   nav.classList.toggle("is-open", !isOpen);
 });
-nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
-  nav.classList.remove("is-open");
-  menuToggle.setAttribute("aria-expanded", "false");
-  menuToggle.setAttribute("aria-label", "Open navigation");
-}));
+nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+document.addEventListener("click", (event) => {
+  if (!nav.contains(event.target) && !menuToggle.contains(event.target)) closeMenu();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMenu();
+});
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 860) closeMenu();
+});
 
 const enquiryForm = document.getElementById("enquiry-form");
 const feedback = document.getElementById("form-feedback");
+const floatingWhatsApp = document.getElementById("whatsapp-float");
+const contactSection = document.querySelector(".contact-section");
+
+function getWhatsAppNumber() {
+  return String(SCHOOL_CONFIG.whatsapp || "").replace(/\D/g, "");
+}
+function hasValidWhatsAppNumber() {
+  const number = getWhatsAppNumber();
+  return /^\d{10,15}$/.test(number) && !/^0+$/.test(number);
+}
+
+floatingWhatsApp.addEventListener("click", (event) => {
+  if (!hasValidWhatsAppNumber()) {
+    // Keep the link's #contact behaviour in preview mode instead of messaging a fake number.
+    feedback.textContent = "Demo preview: add the school's real WhatsApp number in script.js to activate chat.";
+    return;
+  }
+  event.preventDefault();
+  const message = `Hello ${SCHOOL_CONFIG.name} Academy, I would like to ask about admissions.`;
+  window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+});
+
+// Keep the floating action from covering the admissions form on phones and smaller screens.
+if ("IntersectionObserver" in window && contactSection && floatingWhatsApp) {
+  const contactObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      floatingWhatsApp.classList.toggle("is-hidden", entry.isIntersecting);
+    });
+  }, { threshold: 0.12 });
+  contactObserver.observe(contactSection);
+}
+
 enquiryForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = new FormData(enquiryForm);
@@ -41,8 +87,8 @@ enquiryForm.addEventListener("submit", (event) => {
     feedback.textContent = "Please complete your name, phone number and programme of interest.";
     return;
   }
-  if (!/^\d{10,15}$/.test(SCHOOL_CONFIG.whatsapp)) {
-    feedback.textContent = "Demo setup: replace the WhatsApp number in script.js with the school's real number before using this form.";
+  if (!hasValidWhatsAppNumber()) {
+    feedback.textContent = "Demo preview: replace the empty WhatsApp setting in script.js with the school's real number before using this form.";
     return;
   }
 
@@ -56,5 +102,5 @@ enquiryForm.addEventListener("submit", (event) => {
     message ? `Message: ${message}` : ""
   ].filter(Boolean);
   feedback.textContent = "Opening WhatsApp with your enquiry. Please review and send the message there.";
-  window.open(`https://wa.me/${SCHOOL_CONFIG.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+  window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
 });
