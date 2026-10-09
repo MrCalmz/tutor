@@ -3,7 +3,7 @@ const SCHOOL_CONFIG = {
   name: "BrightPath",
   address: "School address, City, Nigeria",
   email: "admissions@example.com",
-  whatsapp: "2348153134856" // Replace with the real WhatsApp number: country code first, digits only, e.g. 2348012345678.
+  whatsapp: "2347048894637" // Replace with the real WhatsApp number: country code first, digits only, e.g. 2348012345678.
 };
 
 document.querySelectorAll("[data-school-name]").forEach((node) => { node.textContent = SCHOOL_CONFIG.name; });
