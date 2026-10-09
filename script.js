@@ -64,15 +64,8 @@ floatingWhatsApp.addEventListener("click", (event) => {
   window.open(`https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
 });
 
-// Keep the floating action from covering the admissions form on phones and smaller screens.
-if ("IntersectionObserver" in window && contactSection && floatingWhatsApp) {
-  const contactObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      floatingWhatsApp.classList.toggle("is-hidden", entry.isIntersecting);
-    });
-  }, { threshold: 0.12 });
-  contactObserver.observe(contactSection);
-}
+// The fixed contact shortcut remains visible. Extra form padding and a high
+// stacking order keep it usable; it must not disappear on section intersection.
 
 enquiryForm.addEventListener("submit", (event) => {
   event.preventDefault();
